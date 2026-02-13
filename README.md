@@ -1,56 +1,61 @@
-# RawDataDownloader
-Program that pulls raw asset price data from Yahoo Finance, applies common indicators, and exports a clean dataset to Excel for analysis, research, and strategy development.
+# OVERVIEW
 
-# Note
+The RawDataDownloader is a Python tool for downloading historical price data from Yahoo Finance and preparing it for spreadsheet-based analysis.
+All core functionality lives in DataDownloader.py, which is the file you will run and modify
+
+# REQUIREMENTS
+
 Python 3.10.11
 
-# Libraries
+Libraries:
 yfinance
 pandas
-numoy
+numpy
 
-#functionality
-This tool (the RawDataDownloader) is designed to download price history for a financial asset from Yahoo Finance and prepare that data for analysis in a spreadsheet.
+These libraries are important for the functionality of the program, they are located in the requirements.txt file of the project directory, do not forget to install them before running the DataDownloader.py file!
 
-1. The DataDownloader.py file is the main script you will run, and edit.
-2. Specify the asset you want to perform an analysis on
-     -> In the code, find the line that sets "ticker" (e.g., "TSLA").
-     -> Replace the default ticker with the exact symbol of the asset you are trying to analyze (e.g., "AAPL" for Apple, "ETH-USD" for Ethereum).
-3. Choose the time interval (bar size), and the appropriate date range. 
-     -> If you have a specific time range in which you want to analyze your desired asset with (minute, hour, daily, weekly, monthly, yearly) then you will need       to specify that where it says interval="1W" (Change the default time range with your desired time range, and follow the same format that was previously      listed, if you need more context:
-     "1H" -> Hourly data
-     "1D" -> Daily data
-     "1W" -> Weekly data
-      What will happen is after you clarify the the time interval, the program will go ahead and download raw data with a timestamp at that exact frequency.
+# INSTRUCTIONS
 
-     # IMPORTANT
-     When you are clarifying the time range for the specific frequency you desire, please remember to change the start_date, and the end_date
+1. Replace the default asset in the DataDownloader.py file with your desired asset you wish to analyze
+   Default: ticker = "TSLA"
+   If you wanna analyze apple
+   ticker = "AAPL"
+   If you wanna analyze Bitcoin
+   ticker = "BTC-USD"
+   This will most certaintly work for any asset as long as it is a valid listed asset on yahoo finance.
 
-     #Reference
-     | Interval                              | How far back you *can* realistically retrieve data |
-| ------------------------------------- | -------------------------------------------------- |
-| **1-minute (`1m`)**                   | ~7 days max history                                |
-| **2-minute (`2m`)**                   | ~60 days max history                               |
-| **5-minute (`5m`)**                   | ~60 days max history                               |
-| **15-minute (`15m`)**                 | ~60 days max history                               |
-| **30-minute (`30m`)**                 | ~60 days max history                               |
-| **60-minute / 1 hour (`60m` / `1h`)** | ~2 years (≈ 730 days)                              |
-| **90-minute (`90m`)**                 | ~2 years (similar to 1h, since it’s hourly-level)  |
-**| Interval              | How far back history is available |
-| --------------------- | --------------------------------- |
-| **Daily (`1d`)**      | Many years of history             |
-| **5-day (`5d`)**      | Many years of history             |
-| **Weekly (`1wk`)**    | Many years of history             |
-| **Monthly (`1mo`)**   | Many years of history             |
-| **Quarterly (`3mo`)** | Many years of history             |
+2. Set the time interval, and analysis length.
+   Find the line interval = "1W" (default) and replace it with the interval you want to analyze
+   "1m" = 1 minute bars
+   "5m" = 5 minute bars
+   "15m" = 15 minute bars
+   "1H" = 1 hour bars
+   "1D" = daily bars
+   "1W" = weekly bars
+   "1MO" = monthly bars
 
-# Important Details
+   The program should download raw data at this exact frequency with OHLC/Timestamps, and other values you desire (make sure you specify what other "values" you want included in the raw data, for instance, RSI values, MA values... etc).
 
-The limitation only applies to intraday intervals (like 1m, 5m, 15m, etc.) because minute‑level and short time bars require a huge amount of storage and Yahoo only keeps recent history for those.
-For daily and longer intervals, Yahoo’s historical data goes back to the early trading history of an asset and for many companies this is several decades.
+3. Set the Date Range
+   The date range must be updated in the files, and the way that the date ranges work is
+   start_date = "YYYY-MM-DD"
+   end_date = "YYYY-MM-DD"
 
-4. Make sure you install the requirement.txt, this contains the necessary libraries you'll need for this program
-   -> If you decide not to install the libraries, this program will not work at all because the main function of DataDownloader.py relies on the libraries such as yfinance, pandas, and numpys to work.
+   Intraday Data Limits
+   1m = 7D of max history
+   2m = 60D of max history
+   5m = 60D of max history
+   15m = 60D of max history
+   30m = 60D of max history
+   1H = 2 years max history
+   90M = 2 years of max history
+   1D - 3M = Decades of price data (varies per asset)
+
+The intraday data limits exist (1m - 1h) due to requirement of massive storage, so Yahoo finance only keeps recent history. Daily, weekly, and monthly data go back decades, it just depends on the exact asset. 
 
 
+# IMPORTANT NOTES
 
+You need to install all the libraries in requirements.txt before running this script.
+DataDownloader.py relies heavily on yfinance, pandas, and numpy and if you don't install these, DataDownloader.py will not work. 
+After setting your asset, interval, and date range, you need to run DataDownloader.py to generate your raw data, once the raw data is generated, the output of DataDownloader.py will result in a CSV file in the project directory. 
